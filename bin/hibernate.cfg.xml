@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <!-- a SessionFactory instance listed as /jndi/name -->
+    <session-factory
+        name="java:hibernate/SessionFactory">
+
+        <!-- properties --><property name="show_sql">true</property>
+    	<property name="format_sql">true</property>
+    	<property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
+        <property name="connection.driver.class">org.sqlite.JDBC</property>
+        <property name="connection.url">false</property>
+        <property name="connection.username"></property>
+        <property name="connection.password"></property>
+        <mapping class="" />
+        <collection-cache collection="org.hibernate.auction.Item.bids" usage="read-write"/>
+
+    </session-factory>
+
+</hibernate-configuration>
