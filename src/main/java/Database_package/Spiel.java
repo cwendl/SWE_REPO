@@ -6,7 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
+@NamedQueries({
+	@NamedQuery(
+	 name = "get_game_by_id",
+	 query = "from Spiel where Nummer = :nummer"
+	)
+	
+})
 @Entity
 @Table(name="Spiel")
 public class Spiel {
