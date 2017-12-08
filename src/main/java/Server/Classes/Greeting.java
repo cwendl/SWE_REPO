@@ -1,4 +1,4 @@
-package Server;
+package Server.Classes;
 
 public class Greeting {
 
