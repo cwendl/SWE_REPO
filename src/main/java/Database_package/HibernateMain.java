@@ -1,4 +1,6 @@
 package Database_package;
+import static org.hamcrest.CoreMatchers.anything;
+
 import java.util.Date;
 
 import org.hibernate.HibernateException;
@@ -36,18 +38,22 @@ public class HibernateMain {
 	
 	public static void main(String[] args) {
 			HibernateMain hb = new HibernateMain();
-			Spiel spiel1 = new Spiel(1,"Heute","Testspiel","Testmap" );
+			/*Spiel spiel1 = new Spiel(1,"Heute","Testspiel","Testmap" );
 			Runde runde1 = new Runde(1, "spieler", 0, 10, false, spiel1);
 			
 			hb.SaveGame(spiel1);
 			hb.SaveRound(runde1);
 			
-			Spiel spiel2 = new Spiel(2,"Heute","Testspiel","Testmap" );
+			Spiel spiel2 = new Spiel(2,"Heute","Frank hat das Spiel gewonnen","Testmap" );
 			hb.SaveGame(spiel2);
+			*/
 			Spiel spiel3 = null;
-			spiel3 = hb.GetSpiel(1);
+			spiel3 = hb.GetSpiel(2);
 			if(spiel3 != null)
 				System.out.println("Das Spiel mit der Nummer: " + spiel3.GetNummer() + " wurde gefunden!");
+			
+			System.out.println((hb.GetGewinner(spiel3.GetNummer())));
+			
 
 	}
 	
@@ -110,6 +116,33 @@ public class HibernateMain {
 		session.flush();
 		tx.commit();
 		return spiel;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if (session!= null) {
+				session.close();
+			}
+		}
+	    System.out.println("Game not found! Returning null");
+		return null;
+	}
+	
+	public String GetGewinner(Integer spielnummer) {
+		try {
+		session = sessionFactory.openSession();
+		
+		Spiel spiel = session.createNamedQuery("get_game_by_id", Spiel.class)
+				.setParameter("nummer", spielnummer)
+				.getSingleResult();
+		
+		tx = session.beginTransaction();
+		session.flush();
+		tx.commit();
+		if(spiel != null)
+			return spiel.GetErgebnis();
+		else
+			return "Kein Spiel gefunden";
 		
 		}catch (Exception e) {
 			e.printStackTrace();

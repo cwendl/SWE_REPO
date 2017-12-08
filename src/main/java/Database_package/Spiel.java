@@ -1,7 +1,5 @@
 package Database_package;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Entity;
@@ -11,10 +9,10 @@ import javax.persistence.NamedQuery;
 
 @NamedQueries({
 	@NamedQuery(
-	 name = "get_game_by_id",
-	 query = "from Spiel where Nummer = :nummer"
+		name = "get_game_by_id",
+	 	query = "from Spiel where Nummer = :nummer"
 	)
-	
+			
 })
 @Entity
 @Table(name="Spiel")
