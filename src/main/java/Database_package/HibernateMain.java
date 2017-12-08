@@ -37,8 +37,10 @@ public class HibernateMain {
 		try {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			Spiel spiel1 = new Spiel(2,"Heute","Testspiel","Testmap" );
+			Spiel spiel1 = new Spiel(3,"Heute","Testspiel","Testmap" );
 			session.save(spiel1);
+			Runde runde1 = new Runde(1, "spieler", 0, 10, false, spiel1);
+			session.save(runde1);
 			session.flush();
 			tx.commit();
 		} catch (Exception e) {
