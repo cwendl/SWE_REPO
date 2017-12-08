@@ -2,6 +2,7 @@ package Database_package;
 import static org.hamcrest.CoreMatchers.anything;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -46,6 +47,13 @@ public class HibernateMain {
 			
 			Spiel spiel2 = new Spiel(2,"Heute","Frank hat das Spiel gewonnen","Testmap" );
 			hb.SaveGame(spiel2);
+			
+
+			Spiel spiel1 = hb.GetSpiel(2);
+			for( int i = 0; i < 20; i++) {
+				Runde runde = new Runde(i+1,"spieler",0,10,false,spiel1);
+				hb.SaveRound(runde);
+			}
 			*/
 			Spiel spiel3 = null;
 			spiel3 = hb.GetSpiel(2);
@@ -53,6 +61,13 @@ public class HibernateMain {
 				System.out.println("Das Spiel mit der Nummer: " + spiel3.GetNummer() + " wurde gefunden!");
 			
 			System.out.println((hb.GetGewinner(spiel3.GetNummer())));
+			List<Runde> rundenListe = hb.GetRunden(10, 20);
+			if (rundenListe != null) {
+				for(int i = 0; i< rundenListe.size(); i++)
+					System.out.println(rundenListe.get(i).GetAllInformation(rundenListe.get(i)));
+			}
+				
+			
 			
 
 	}
@@ -152,6 +167,33 @@ public class HibernateMain {
 			}
 		}
 	    System.out.println("Game not found! Returning null");
+		return null;
+	}
+	
+	public List<Runde> GetRunden(Integer start, Integer stop){
+		try {
+		session = sessionFactory.openSession();
+		
+		List<Runde> rundenListe = session.createNamedQuery("get_rounds_from_to", Runde.class)
+				.setParameter("nummer1", start)
+				.setParameter("nummer2", stop)
+				.getResultList();
+		
+		tx = session.beginTransaction();
+		session.flush();
+		tx.commit();
+		if(rundenListe != null)
+			return rundenListe;
+		else
+			return null;
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if (session!= null) {
+				session.close();
+			}
+		}
 		return null;
 	}
 

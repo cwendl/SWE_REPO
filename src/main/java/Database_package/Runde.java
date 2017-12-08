@@ -7,6 +7,16 @@ import javax.persistence.Id;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
+@NamedQueries({
+	@NamedQuery(
+		name = "get_rounds_from_to",
+	 	query = "select r from Runde r where r.nummer between :nummer1 and :nummer2"
+	)
+			
+})
 
 @Entity
 @Table(name = "Runde")
@@ -86,6 +96,16 @@ public class Runde {
 	
 	public Spiel GetSpiel() {
 		return this.spiel;
+	}
+	
+	public String GetAllInformation(Runde runde) {
+		return "Runde Nummer: " + runde.GetNummer() + 
+				"\nSpieler: " + runde.GetSpieler() +
+				"\nLetzte Position: " + runde.GetLetztePosition() +
+				"\nAktuelle Position: " + runde.GetAktuellePosition() +
+				"\nSchatz: " + (runde.GetSchatz() ? "Ja" : "Nein") +
+				"\nSpiel Nummer: " + runde.GetSpiel().GetNummer();
+				
 	}
 	
 	/*
