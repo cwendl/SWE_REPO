@@ -6,18 +6,18 @@
 <hibernate-configuration>
 
     <!-- a SessionFactory instance listed as /jndi/name -->
-    <session-factory
-        name="java:hibernate/SessionFactory">
-
-        <!-- properties --><property name="show_sql">true</property>
+    <session-factory>
+        <!-- properties -->
+        <property name="show_sql">true</property>
     	<property name="format_sql">true</property>
     	<property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
         <property name="connection.driver.class">org.sqlite.JDBC</property>
-        <property name="connection.url">false</property>
+        <property name="connection.url">jdbc:sqlite:mydb.db</property>
         <property name="connection.username"></property>
         <property name="connection.password"></property>
-        <mapping class="" />
-        <collection-cache collection="org.hibernate.auction.Item.bids" usage="read-write"/>
+        <mapping class="Database_package.Spiel" />
+        <mapping class="Database_package.Runde" />
+
 
     </session-factory>
 
