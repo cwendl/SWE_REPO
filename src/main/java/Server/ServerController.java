@@ -18,6 +18,7 @@ public class ServerController {
 	
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
+	private RunGame run;
 	
 	@RequestMapping(value = "/greeting", method = RequestMethod.GET)
 	public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -55,7 +56,28 @@ public class ServerController {
 	)
 	public ResponseEntity<HttpStatus> RegisterNewPlayerRequest(
 		@RequestBody RegisterNewPlayer newPlayer) {
-		return ResponseEntity.ok(HttpStatus.OK);
+		if(newPlayer != null) {
+			if(run == null) {
+				run = new RunGame(newPlayer);
+				return ResponseEntity.ok(HttpStatus.OK);
+			}
+
+			else if(run.GetPlayerList().size() > 1)
+				return ResponseEntity.ok(HttpStatus.CONFLICT);
+			else if(run.GetPlayerList().get(0).GetClientIP().equals(newPlayer.GetClientIP()))
+				return ResponseEntity.ok(HttpStatus.CONFLICT);
+			try {
+			run.GetPlayerList().add(newPlayer);
+			System.out.println(run.GetPlayerList().size());
+			return ResponseEntity.ok(HttpStatus.OK);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return ResponseEntity.ok(HttpStatus.OK);
+		}
+			
+		else
+			return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
 	}
 	
 	
