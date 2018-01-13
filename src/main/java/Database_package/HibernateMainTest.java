@@ -19,8 +19,6 @@ public class HibernateMainTest {
 	public void setUp() throws Exception {
 		 hbTest = new HibernateMain();
 		 spiel1 = new Spiel(1,"Heute","Testspiel","Testmap" );
-		 //hbTest.SaveGame(spiel1);
-
 	}
 
 	@After
@@ -31,16 +29,13 @@ public class HibernateMainTest {
 	public void testHibernateMain() {
 
 		assertTrue(hbTest != null);
-		//fail("HibernateMain Object could not be created");
 	}
 
 	@Test
 	public void testSaveGame() {
-		//spiel2 = new Spiel(2,"Heute","Testspiel","Testmap" );
 		 hbTest.SaveGame(spiel1);
 		 
 		 assertEquals(spiel1.GetNummer(), hbTest.GetSpiel(spiel1.GetNummer()).GetNummer());
-		//fail("Spiel ist nicht äquivalent mit gespeichertem Spiel");
 	}
 
 	@Test
@@ -52,7 +47,6 @@ public class HibernateMainTest {
 		hbTest.SaveRound(runde1);
 		
 		assertEquals(runde1.GetNummer(), hbTest.GetRunden(spiel3, runde1.GetNummer(), runde1.GetNummer()).get(0).GetNummer());
-		//fail("Runde ist nicht äquivalent mit gespeicherter Runde");
 	}
 
 	@Test
@@ -63,7 +57,6 @@ public class HibernateMainTest {
 		 
 		assertThat(spiel5.GetNummer(), is(hbTest.GetSpiel(spiel5.GetNummer()).GetNummer()));
 		 assertThat(5, is(5));
-		//fail("Spielnummer in Datenbank : " + hbTest.GetSpiel(spiel5.GetNummer()).GetNummer() + " Testspielnummer: " + spiel5.GetNummer());
 	}
 
 	@Test
@@ -73,7 +66,7 @@ public class HibernateMainTest {
 		 gewinner = "Frank";
 		 
 		 assertEquals(gewinner, hbTest.GetGewinner(spiel4.GetNummer()));
-		//fail("Eingetragener Gewinner ist nicht Testgewinner!");
+
 	}
 
 	@Test
@@ -91,7 +84,7 @@ public class HibernateMainTest {
 				
 			}
 
-		//fail("Runden in Liste sind nicht gleich Runden in Testliste");
+
 	}
 
 
