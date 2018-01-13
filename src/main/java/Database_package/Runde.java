@@ -13,7 +13,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
 	@NamedQuery(
 		name = "get_rounds_from_to",
-	 	query = "select r from Runde r where r.nummer between :nummer1 and :nummer2"
+	 	query = "select r from Runde r where r.nummer between :nummer1 and :nummer2 and r.spiel = :spiel"
 	)
 			
 })
@@ -116,7 +116,6 @@ public class Runde {
 			aktuelle_Position Integer,
 			Schatz Boolean,
 			Spiel Integer,
-			Primary Key (Nummer),
 			Foreign Key (Spiel) References Spiel(Nummer)
 		);
 */

@@ -61,7 +61,7 @@ public class HibernateMain {
 				System.out.println("Das Spiel mit der Nummer: " + spiel3.GetNummer() + " wurde gefunden!");
 			
 			System.out.println((hb.GetGewinner(spiel3.GetNummer())));
-			List<Runde> rundenListe = hb.GetRunden(10, 20);
+			List<Runde> rundenListe = hb.GetRunden(spiel3, 10, 20);
 			if (rundenListe != null) {
 				for(int i = 0; i< rundenListe.size(); i++)
 					System.out.println(rundenListe.get(i).GetAllInformation(rundenListe.get(i)));
@@ -170,13 +170,14 @@ public class HibernateMain {
 		return null;
 	}
 	
-	public List<Runde> GetRunden(Integer start, Integer stop){
+	public List<Runde> GetRunden(Spiel spiel, Integer start, Integer stop){
 		try {
 		session = sessionFactory.openSession();
 		
 		List<Runde> rundenListe = session.createNamedQuery("get_rounds_from_to", Runde.class)
 				.setParameter("nummer1", start)
 				.setParameter("nummer2", stop)
+				.setParameter("spiel", spiel)
 				.getResultList();
 		
 		tx = session.beginTransaction();

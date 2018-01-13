@@ -64,7 +64,7 @@ public class Spiel {
 		this.ergebnis = ergebnis;
 	}
 	
-	public String GetKartes() {
+	public String GetKarte() {
 		return this.karte;
 	}
 	
