@@ -1,5 +1,6 @@
 package Server;
 
+import Server.Classes.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import Server.Classes.Greeting;
@@ -18,7 +20,7 @@ public class ServerController {
 	
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
-	private RunGame run;
+	private RunGame game;
 	
 	@RequestMapping(value = "/greeting", method = RequestMethod.GET)
 	public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -33,8 +35,12 @@ public class ServerController {
 			method = RequestMethod.GET,
 			produces = { "application/json", "application/xml" }
 	)
+	@ResponseBody
 	public String GameStatus() {
-		return "@GameStatust";
+		if (game == null)
+			return GameStatus.GetGameStatus("Player1", 1, "Not enough players! Wait for other player to join!");
+		else
+			return "Default-state";
 	}
 	
 	
@@ -57,18 +63,18 @@ public class ServerController {
 	public ResponseEntity<HttpStatus> RegisterNewPlayerRequest(
 		@RequestBody RegisterNewPlayer newPlayer) {
 		if(newPlayer != null) {
-			if(run == null) {
-				run = new RunGame(newPlayer);
+			if(game == null) {
+				game = new RunGame(newPlayer);
 				return ResponseEntity.ok(HttpStatus.OK);
 			}
 
-			else if(run.GetPlayerList().size() > 1)
+			else if(game.GetPlayerList().size() > 1)
 				return ResponseEntity.ok(HttpStatus.CONFLICT);
-			else if(run.GetPlayerList().get(0).GetClientIP().equals(newPlayer.GetClientIP()))
+			else if(game.GetPlayerList().get(0).GetClientIP().equals(newPlayer.GetClientIP()))
 				return ResponseEntity.ok(HttpStatus.CONFLICT);
 			try {
-			run.GetPlayerList().add(newPlayer);
-			System.out.println(run.GetPlayerList().size());
+			game.GetPlayerList().add(newPlayer);
+			System.out.println(game.GetPlayerList().size());
 			return ResponseEntity.ok(HttpStatus.OK);
 			}catch(Exception e) {
 				e.printStackTrace();
