@@ -3,6 +3,8 @@ package Server;
 import Server.Classes.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,9 +38,9 @@ public class ServerController {
 			produces = { "application/json", "application/xml" }
 	)
 	@ResponseBody
-	public String GameStatus() {
+	public String GameStatus(HttpServletRequest request) {
 		if (game == null)
-			return GameStatus.GetGameStatus("Player1", 1, "Not enough players! Wait for other player to join!");
+			return GameStatus.GetGameStatus(request.getRemoteAddr(), 1, "Not enough players! Wait for other player to join!");
 		else
 			return "Default-state";
 	}
@@ -60,6 +62,7 @@ public class ServerController {
 			produces = { "application/json", "application/xml" },
 			consumes = {"application/json"}
 	)
+	@ResponseBody
 	public ResponseEntity<HttpStatus> RegisterNewPlayerRequest(
 		@RequestBody RegisterNewPlayer newPlayer) {
 		if(newPlayer != null) {
@@ -90,10 +93,20 @@ public class ServerController {
 	@RequestMapping(
 			value = "/GameMapData",
 			method = RequestMethod.POST,
-			produces = { "application/json", "application/xml" }
+			produces = { "application/json", "application/xml" },
+			consumes = {"application/json"}
 	)
-	public String GameMapData() {
-		return "@GameMapData";
+	public ResponseEntity<String> GameMapData(
+			@RequestBody GameMap gameMap) {
+			
+		if(gameMap != null) {
+			if(game == null)
+				return ResponseEntity.badRequest().body("No running Game!");
+			
+			return ResponseEntity.ok("GameMap accepted");
+		}else {
+			return ResponseEntity.badRequest().body("No GameMap found!");
+		}
 	}
 	
 	

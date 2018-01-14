@@ -40,4 +40,5 @@ public class RegisterNewPlayer {
 	public void SetPlayername(String Playername) {
 		this.Playername = Playername;
 	}
+	
 }
