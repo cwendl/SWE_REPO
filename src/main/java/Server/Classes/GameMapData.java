@@ -33,9 +33,9 @@ public class GameMapData {
 	}
 	
 	public static Boolean CheckMap(String GameData) {
-		//TODO Extract Map into Array to Check
+		//TODO Count specific Tiles for minimum req.
+		//TODO check for other businessrule violations
 		JSONObject obj;
-		String[][] map = new String[4][8];
 		try {
 			obj = new JSONObject(GameData);
 			try {
@@ -64,15 +64,12 @@ public class GameMapData {
 				String arrayMapString = new String(arrayMap.toString());
 				System.out.println(arrayMapString);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//System.out.println(GameData);
 		return true;
 	}
 }

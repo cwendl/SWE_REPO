@@ -102,8 +102,12 @@ public class ServerController {
 		if(gameMap != null) {
 			if(game == null)
 				return ResponseEntity.badRequest().body("No running Game!");
-			GameMapData.CheckMap(gameMap.GetGameData());
-			return ResponseEntity.ok("GameMap accepted");
+			if(!GameMapData.CheckMap(gameMap.GetGameData()))
+				return ResponseEntity.badRequest().body("Map Error! Map does not meet the requirements!");
+			else {
+				//TODO Add Mappart to game
+				return ResponseEntity.ok("GameMap accepted");
+			}
 		}else {
 			return ResponseEntity.badRequest().body("No GameMap found!");
 		}
@@ -113,9 +117,19 @@ public class ServerController {
 	@RequestMapping(
 			value = "/GameTurnData",
 			method = RequestMethod.POST,
-			produces = { "application/json", "application/xml" }
+			produces = { "application/json", "application/xml" },
+			consumes = {"application/json"}
 	)
-	public String GameTurnData() {
-		return "@GameTurnData";
+	public ResponseEntity<String> GameTurnData(
+			@RequestBody GameTurnData turnData) {
+		if(game == null)
+			return ResponseEntity.badRequest().body("No running Game!");
+		else if(turnData == null){
+			return ResponseEntity.badRequest().body("No TurnData found!");
+		}
+		else if(!GameTurnData.CheckTurnData(turnData.GetGameTurnData()))
+			return ResponseEntity.badRequest().body("TurnData error! TurnData does not meet requirements");
+		else
+			return ResponseEntity.ok().body("TurnData accepted!");
 	}
 }
