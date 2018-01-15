@@ -97,12 +97,12 @@ public class ServerController {
 			consumes = {"application/json"}
 	)
 	public ResponseEntity<String> GameMapData(
-			@RequestBody GameMap gameMap) {
+			@RequestBody GameMapData gameMap) {
 			
 		if(gameMap != null) {
 			if(game == null)
 				return ResponseEntity.badRequest().body("No running Game!");
-			
+			GameMapData.CheckMap(gameMap.GetGameData());
 			return ResponseEntity.ok("GameMap accepted");
 		}else {
 			return ResponseEntity.badRequest().body("No GameMap found!");

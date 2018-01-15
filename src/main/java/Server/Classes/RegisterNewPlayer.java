@@ -3,14 +3,14 @@ package Server.Classes;
 public class RegisterNewPlayer {
 	public String ClientIP;
 	public String Port;
-	public String Playername;
+	public String PlayerName;
 	
 	public RegisterNewPlayer() {}
 	
-	public RegisterNewPlayer(String ClientIP, String Port, String Playername){
+	public RegisterNewPlayer(String ClientIP, String Port, String PlayerName){
 		this.ClientIP = ClientIP;
 		this.Port = Port;
-		this.Playername = Playername;
+		this.PlayerName = PlayerName;
 	}
 	
 	public String GetClientIP() {
@@ -29,16 +29,16 @@ public class RegisterNewPlayer {
 		this.Port = Port;
 	}
 	public String GetPlayername() {
-		if(this.Playername != null)
-			return this.Playername;
+		if(this.PlayerName != null)
+			return this.PlayerName;
 		else {
 			this.SetPlayername(this.GetClientIP());
 		}
 		return this.GetClientIP();
 	}
 	
-	public void SetPlayername(String Playername) {
-		this.Playername = Playername;
+	public void SetPlayername(String PlayerName) {
+		this.PlayerName = PlayerName;
 	}
 	
 }
