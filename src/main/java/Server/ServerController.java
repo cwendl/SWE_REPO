@@ -51,8 +51,8 @@ public class ServerController {
 			method = RequestMethod.GET,
 			produces = { "application/json", "application/xml" }
 	)
-	public String GameInformation() {
-		return "@GameInformation";
+	public ResponseEntity<String> GameInformation() {
+		return ResponseEntity.ok("\"{\\\"Datatype\\\": \\\"Map\\\",\\\"Content\\\": [{\\\"RowNumber\\\": 0,\\\"Columns\\\": [{\\\"TileNumberX\\\": 0,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 1,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 2,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 3,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 4,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 5,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 6,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 7,\\\"TileType\\\": 0}]},{\\\"RowNumber\\\": 1,\\\"Columns\\\": [{\\\"TileNumberX\\\": 0,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 1,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 2,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 3,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 4,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 5,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 6,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 7,\\\"TileType\\\": 0}]},{\\\"RowNumber\\\": 2,\\\"Columns\\\": [{\\\"TileNumberX\\\": 0,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 1,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 2,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 3,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 4,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 5,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 6,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 7,\\\"TileType\\\": 0}]},{\\\"RowNumber\\\": 3,\\\"Columns\\\": [{\\\"TileNumberX\\\": 0,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 1,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 2,\\\"TileType\\\": 1},{\\\"TileNumberX\\\": 3,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 4,\\\"TileType\\\": 0},{\\\"TileNumberX\\\": 5,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 6,\\\"TileType\\\": 2},{\\\"TileNumberX\\\": 7,\\\"TileType\\\": 0}]}]}\"");
 	}
 	
 	

@@ -63,7 +63,7 @@ public class ClientMain {
 		httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 		
-		
+		/*
 	    java.util.List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();    
 	    messageConverters.add(new FormHttpMessageConverter());
 	    messageConverters.add(new StringHttpMessageConverter());
@@ -76,7 +76,7 @@ public class ClientMain {
 	    messageConverters.add(jsonConverter);
 	    restTemplate.setMessageConverters(messageConverters);
 	    
-	    
+	    */
 	    log.info(restTemplate.getMessageConverters().toString());
 		String s = restTemplate.getForObject("http://localhost:8080/greeting?name=" + player.GetPlayerName(), String.class);
 		log.info(s);
@@ -167,10 +167,10 @@ public class ClientMain {
 			
 			HttpEntity<String> entity = new HttpEntity<String>(mapPart.toString(),httpHeaders);
 			String s = restTemplate.postForObject("http://localhost:8080/GameMapData", entity, String.class);
+			
 			//ResponseEntity<String> s = restTemplate.postForEntity("http://localhost:8080/GameMapData", new HttpEntity<Object>(mapPart.toString(), httpHeaders), String.class);
 			log.info(s.toString());
-			//String s = restTemplate.patchForObject("http://localhost:8080/GameMapData", request, String.class);
-			//String s = restTemplate.getForObject("http://localhost:8080/GameMapData", String.class);
+
 		}
 
 	}
@@ -182,6 +182,25 @@ public class ClientMain {
 					-> speichert gegnerposition in map als burg der zweiten hälfte
 				-> schreibt mapdaten in globale map
 		 */
+		if(map == null) {
+			Tile[][] tileMapPart = new Tile[8][8];
+			GameMap map = new GameMap(tileMapPart);
+		}
+		
+		String s = restTemplate.getForObject("http://localhost:8080/GameInformation", String.class);
+		log.info("Enemy Map: " + s);
+		
+		/** Generating enemy mappart by mirroring own map since server only replying with dummymap **/
+		for(int y=4; y<8; y++) {
+			for(int x=0; x<8;x++) {
+				map.map[x][y] = map.map[x][y-4];
+
+			}
+		}
+		/** assuming that enemy is on field(0,4) his castle will be there
+		 *  normally the server would respond with the hole map and both player positions		
+		 */
+		view.Draw(map, 0, 40);
 	}
 	
 	private static void runGame() {
@@ -194,6 +213,7 @@ public class ClientMain {
 				->ruft draw methode von clientview auf
 				---- erfragt status bis gewonnen/verloren -> kommt von server 
 		 */
+		updateMap();
 		
 	}
 	
