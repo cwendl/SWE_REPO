@@ -67,6 +67,7 @@ public class ClientMain {
 			log.info("Max water tiles set to: " + maxWater);
 			int maxMountain = ThreadLocalRandom.current().nextInt(3, 8 + 1);
 			log.info("Max mountain tiles set to: " + maxMountain);
+			log.info("Generating map now....");
 			for(int y= 0; y<8; y++) {
 				for(int x=0; x<8;x++) {
 					if(y >3) {
