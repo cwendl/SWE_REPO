@@ -23,6 +23,7 @@ public class ServerController {
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 	private RunGame game;
+	private static int tempcount=0;
 	
 	@RequestMapping(value = "/greeting", method = RequestMethod.GET)
 	public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
@@ -39,10 +40,20 @@ public class ServerController {
 	)
 	@ResponseBody
 	public String GameStatus(HttpServletRequest request) {
-		if (game == null)
+		/*if (game == null)
 			return GameStatus.GetGameStatus(request.getRemoteAddr(), 1, "Not enough players! Wait for other player to join!");
-		else
-			return "Default-state";
+		else {*/
+			switch(tempcount) {
+			case 0: tempcount++; 
+				return "NewData";
+			case 1: tempcount++;
+				return "Wait";
+			case 2: tempcount=tempcount-2;
+				return "Turn";
+			default: tempcount=0; 
+				return "Wait";
+			}
+		//}
 	}
 	
 	
