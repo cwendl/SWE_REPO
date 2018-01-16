@@ -17,26 +17,28 @@ public class GameView {
 	public void Draw(GameMap gameMap, Integer position, Integer enemyPosition) {
 		System.out.print("\033[H\033[2J");
 		System.out.println("\nThe map:\n");
-		for(int y=7; y>0; y--) {
+		for(int y=7; y>=0; y--) {
 			for(int x=0; x<8; x++) {
-				if(position == x+y)
-					System.out.print('P');
-				else if(enemyPosition == x+y)
-					System.out.print('E');
+				if(position == x+(y*10))
+					System.out.print("[ P ]");
+				else if(enemyPosition == x+(y*10))
+					System.out.print("[ E ]");
 				else if(gameMap.CastleOn(x, y))
-					System.out.print('C');
+					System.out.print("[ C ]");
 				else {
 					switch(gameMap.GetTileTypeOn(x, y)) {
-					case 0: System.out.print('o');
+					case 0: System.out.print("[   ]");
 						break;
-					case 1: System.out.print('M');
+					case 1: System.out.print("[ M ]");
 						break;
-					case 2: System.out.print('~');
+					case 2: System.out.print("[ ~ ]");
 						break;
-					default: System.out.print('X');
+					default: System.out.print("[ X ]");
 						break;
 					}
 				}
+				if(x == 7)
+					System.out.println("\n");
 			}
 		}
 		System.out.println("Player on Tile : " + position);
