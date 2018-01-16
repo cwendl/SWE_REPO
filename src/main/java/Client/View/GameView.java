@@ -5,6 +5,8 @@ import Client.Model.GameMap;
 
 public class GameView {
 	
+	public GameView() {}
+	
 	public void Start(String serverResponse) {
 		System.out.println("SWE Game\n");
 		System.out.println("Connecting to server...\n");
@@ -15,7 +17,7 @@ public class GameView {
 	public void Draw(GameMap gameMap, Integer position, Integer enemyPosition) {
 		System.out.print("\033[H\033[2J");
 		System.out.println("\nThe map:\n");
-		for(int y=0; y< 8; y++) {
+		for(int y=7; y>0; y--) {
 			for(int x=0; x<8; x++) {
 				if(position == x+y)
 					System.out.print('P');
