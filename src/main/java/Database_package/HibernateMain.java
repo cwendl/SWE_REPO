@@ -16,7 +16,7 @@ public class HibernateMain {
 	private Session session = null;
 	private Transaction tx = null;
 
-	HibernateMain(){
+	public HibernateMain(){
 		configureSessionFactory();
 		this.session = null;
 		this.tx = null;
