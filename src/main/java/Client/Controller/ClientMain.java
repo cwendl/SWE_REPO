@@ -1,19 +1,35 @@
 package Client.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Client.Model.GameMap;
 import Client.Model.PlayerID;
 import Client.Model.Tile;
 import Client.View.GameView;
+import antlr.collections.List;
 
 
 @SpringBootApplication
@@ -21,9 +37,11 @@ public class ClientMain {
 	
 	private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
 	private static RestTemplate restTemplate;
+	private static HttpHeaders httpHeaders;
 	
 	private static GameView view;
 	private static GameMap map;
+	private static PlayerID player;
 	public static void main(String[] args) {
 		/*
 		 *
@@ -36,12 +54,30 @@ public class ClientMain {
 		props.put("server.port", 9999);
 		
 		
-		PlayerID player = new PlayerID("Spieler1","192.168.0.3","8080","http://localhost:");
+		player = new PlayerID("Spieler1","192.168.0.3","8080","http://localhost:");
         new SpringApplicationBuilder()
         .sources(ClientMain.class)
         .properties(props)
         .run(args);
 		restTemplate = new RestTemplate();
+		httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		
+		
+	    java.util.List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();    
+	    messageConverters.add(new FormHttpMessageConverter());
+	    messageConverters.add(new StringHttpMessageConverter());
+	    MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
+	    jsonConverter.setObjectMapper(new ObjectMapper());
+	    java.util.List<MediaType> mediaTypeList= new ArrayList<MediaType>();
+	    mediaTypeList.add(new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
+	    mediaTypeList.add(new MediaType("text", "javascript", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET));
+	    jsonConverter.setSupportedMediaTypes(mediaTypeList);
+	    messageConverters.add(jsonConverter);
+	    restTemplate.setMessageConverters(messageConverters);
+	    
+	    
+	    log.info(restTemplate.getMessageConverters().toString());
 		String s = restTemplate.getForObject("http://localhost:8080/greeting?name=" + player.GetPlayerName(), String.class);
 		log.info(s);
 		view = new GameView();
@@ -99,7 +135,40 @@ public class ClientMain {
 				}
 			}
 			map = new GameMap(tileMapPart);
+			map.map[0][0].SetCastle(true);
 			view.Draw(map, 0, 77);
+			JSONObject mapPart = new JSONObject();
+			try {
+				mapPart.put("PlayerName",player.GetPlayerName());
+				JSONObject gameData = new JSONObject();
+				gameData.put("Datatype", "Map");
+				JSONArray content = new JSONArray();
+				for(int y=0; y<4;y++) {
+					JSONObject rowNumber = new JSONObject();
+					rowNumber.put("RowNumber", y);
+					JSONArray columns = new JSONArray();
+					for(int x=0;x<8;x++) {
+						JSONObject column = new JSONObject();
+						column.put("TileNumberX", x);
+						column.put("TileType", map.GetTileTypeOn(x, y));
+						columns.put(column);
+					}
+
+					rowNumber.put("Columns", columns);
+					content.put(rowNumber);
+						
+				}
+				gameData.put("Content", content);
+				mapPart.put("GameData", gameData);
+				log.info("JSON message object: " + mapPart);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			HttpEntity<String> entity = new HttpEntity<String>(mapPart.toString(),httpHeaders);
+			String s = restTemplate.postForObject("http://localhost:8080/GameMapData", entity, String.class);
+			//ResponseEntity<String> s = restTemplate.postForEntity("http://localhost:8080/GameMapData", new HttpEntity<Object>(mapPart.toString(), httpHeaders), String.class);
+			log.info(s.toString());
 			//String s = restTemplate.patchForObject("http://localhost:8080/GameMapData", request, String.class);
 			//String s = restTemplate.getForObject("http://localhost:8080/GameMapData", String.class);
 		}
@@ -125,6 +194,7 @@ public class ClientMain {
 				->ruft draw methode von clientview auf
 				---- erfragt status bis gewonnen/verloren -> kommt von server 
 		 */
+		
 	}
 	
 	private int calcTurn() {

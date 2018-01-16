@@ -93,12 +93,11 @@ public class ServerController {
 	@RequestMapping(
 			value = "/GameMapData",
 			method = RequestMethod.POST,
-			produces = { "application/json", "application/xml" },
-			consumes = {"application/json"}
+			produces = { "application/json", "application/xml" }
 	)
 	public ResponseEntity<String> GameMapData(
-			@RequestBody GameMapData gameMap) {
-			
+			/*@RequestBody GameMapData gameMap*/) {
+		/*	
 		if(gameMap != null) {
 			if(game == null)
 				return ResponseEntity.badRequest().body("No running Game!");
@@ -111,6 +110,8 @@ public class ServerController {
 		}else {
 			return ResponseEntity.badRequest().body("No GameMap found!");
 		}
+		*/
+		return ResponseEntity.ok("GameMap accepted");
 	}
 	
 	
